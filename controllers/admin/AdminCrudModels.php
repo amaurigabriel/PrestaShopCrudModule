@@ -6,14 +6,19 @@ class AdminCrudModelsController extends ModuleAdminController
     {
         $this->bootstrap  = true;
         $this->table      = 'crud_model';
-        $this->identifier = 'id';
+        $this->identifier = 'id_crud_model';
         $this->className  = 'CrudModel';
 
         parent::__construct();
 
+        $id_lang = $this->context->language->id;
+
+        $this->_join .= ' LEFT JOIN '._DB_PREFIX_.'crud_model_lang b ON (b.id_crud_model = a.id_crud_model AND b.id_lang = '. $id_lang . ')';
+        $this->_select .= ' b.name as name, b.description as description';
+
         //data to the grid of the "view" action
         $this->fields_list = [
-            'id'       => [
+            'id_crud_model'       => [
                 'title' => $this->l('ID'),
                 'type'  => 'text',
                 'align' => 'center',
@@ -23,12 +28,15 @@ class AdminCrudModelsController extends ModuleAdminController
                 'title' => $this->l('Name'),
                 'type'  => 'text',
             ],
+            'description'     => [
+                'title' => $this->l('Description'),
+                'type'  => 'text',
+            ],
             'active'   => [
                 'title'  => $this->l('Status'),
                 'active' => 'status',
                 'align'  => 'text-center',
-                'type'   => 'bool',
-                'class'  => 'fixed-width-sm',
+                'class'  => 'fixed-width-sm'
             ],
             'date_add' => [
                 'title' => $this->l('Created'),
@@ -61,7 +69,15 @@ class AdminCrudModelsController extends ModuleAdminController
                     'label'    => $this->l('Name'),
                     'name'     => 'name',
                     'required' => true,
+                    'lang' => true
                 ],
+                'description'   => [
+                    'type'     => 'text',
+                    'label'    => $this->l('Description'),
+                    'name'     => 'description',
+                    'required' => true,
+                    'lang' => true
+                ],                
                 'active' => [
                     'type'   => 'switch',
                     'label'  => $this->l('Active'),
@@ -84,5 +100,10 @@ class AdminCrudModelsController extends ModuleAdminController
                 'title' => $this->l('Save'),
             ],
         ];
-    }   
+    }
+
+    public function initContent()
+    {
+        parent::initContent();
+    }
 }
