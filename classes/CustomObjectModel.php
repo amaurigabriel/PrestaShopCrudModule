@@ -69,14 +69,14 @@ class CrudCustomObjectModel extends ObjectModel
         }
         else
         {
-            if (isset($field['required']) && $field['required'])
+            if (isset($column_definition['required']) && $column_definition['required'])
             {
                 $sql .= ' NOT NULL';
             }
 
-            if (isset($field['default']))
+            if (isset($column_definition['default']))
             {
-                $sql .= ' DEFAULT "' . $field['default'] . '"';
+                $sql .= ' DEFAULT "' . $column_definition['default'] . '"';
             }
         }
 
